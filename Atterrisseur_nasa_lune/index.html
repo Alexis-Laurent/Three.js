@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/three.js"></script>
+	<script src="js/OrbitControls.js"></script>
+	<script src="js/THREEx.KeyboardState.js"></script>
+	<script src="js/Detector.js"></script>
+	<style>
+		body {
+			margin: 0;
+		}
+		canvas {
+			width: 100%;
+			height: 100%
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight);
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		camera.position.z = 120;
+		camera.position.y = 15;
+
+		// Mouvement camera
+		var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+		// Mouvement clavier 
+		var keyboard = new THREEx.KeyboardState();
+		var clock = new THREE.Clock();
+				
+		
+		// Base lunaire
+		var baseTexture=new THREE.ImageUtils.loadTexture('js/batiment.jpg');
+        	baseTexture.wrapS=baseTexture.wrapT=THREE.RepeatWrapping;
+		baseTexture.repeat.set(1,0.5);
+
+		var geometry1 = new THREE.BoxGeometry(15, 5, 10);	
+        	var material1=new THREE.MeshBasicMaterial({map:baseTexture,side:THREE.DoubleSide});
+
+		var base1 = new THREE.Mesh(geometry1, material1);
+		scene.add(base1);
+		base1.position.x= -30;
+		base1.position.y = 0;
+
+		var base2 = new THREE.Mesh(geometry1, material1);
+		scene.add(base2);
+		base2.position.x= -30;
+		base2.position.y = 0;
+		base2.position.z = -15;
+
+		var base3 = new THREE.Mesh(geometry1, material1);
+		scene.add(base3);
+		base3.position.x= -30;
+		base3.position.y = 0;
+		base3.position.z = 15;
+
+		// Plate-forme
+		var geometry5 = new THREE.CylinderGeometry( 1, 1.5, 1, 8 );
+		var material5 = new THREE.MeshBasicMaterial( {color: "white",wireframe: true} );
+		var moteur = new THREE.Mesh( geometry5, material5 );
+		scene.add(moteur);
+		moteur.position.y = -2;
+			   
+		// Cylindre
+		var cylindreTexture=new THREE.ImageUtils.loadTexture('js/logo_nasa.png');
+        	cylindreTexture.wrapS=cylindreTexture.wrapT=THREE.RepeatWrapping;
+		cylindreTexture.repeat.set(2, 1);
+
+		var geometry3 = new THREE.CylinderGeometry( 1.5, 1.5, 4, 32 );
+		var material3 = new THREE.MeshBasicMaterial( {map:cylindreTexture,side:THREE.DoubleSide} );
+		var cylindre = new THREE.Mesh( geometry3, material3 );
+		scene.add(cylindre);
+		cylindre.position.y = 0.50;
+
+		// Cone
+		var geometry4 = new THREE.ConeGeometry( 1.5, 1.5, 32 );
+		var material4 = new THREE.MeshBasicMaterial( {color: "white"} );
+		var cone = new THREE.Mesh( geometry4, material4 );
+		scene.add(cone);
+		cone.position.y = 3.25;	
+
+		// Soleil
+		var soleilTexture=new THREE.ImageUtils.loadTexture('js/soleil.jpg');
+        	soleilTexture.wrapS=soleilTexture.wrapT=THREE.RepeatWrapping;
+		soleilTexture.repeat.set(2, 2);
+
+		var geometry2 = new THREE.SphereGeometry( 4, 32, 32 );
+		var material2 = new THREE.MeshBasicMaterial( {map:soleilTexture,side:THREE.DoubleSide} );
+		var soleil = new THREE.Mesh( geometry2, material2 );
+		scene.add(soleil);
+		soleil.position.x= -110;
+		soleil.position.y = 30;
+		soleil.position.z = -300;
+
+		// Terre
+		var terreTexture=new THREE.ImageUtils.loadTexture('js/terre.jpg');
+        	terreTexture.wrapS=terreTexture.wrapT=THREE.RepeatWrapping;
+		terreTexture.repeat.set(1, 1);
+
+		var geometry6 = new THREE.SphereGeometry( 16, 32, 32 );
+		var material6 = new THREE.MeshBasicMaterial( {map:terreTexture,side:THREE.DoubleSide} );
+		var terre = new THREE.Mesh( geometry6, material6 );
+		scene.add(terre);
+		terre.position.x= 100;
+		terre.position.y = 25;
+		terre.position.z = -300;
+
+		// Ciel
+		var cielTexture = new THREE.ImageUtils.loadTexture('js/espace.jpg');
+        	cielTexture.wrapS = cielTexture.wrapT = THREE.RepeatWrapping;
+        	cielTexture.repeat.set(1, 3);
+
+		var cielGeometry = new THREE.CubeGeometry(1000, 1000, 1000);
+        	var cielMaterial = new THREE.MeshBasicMaterial( {map: cielTexture, side: THREE.BackSide} );
+        	var ciel = new THREE.Mesh(cielGeometry, cielMaterial);
+        	scene.add(ciel);
+
+		// Sol
+		var floorTexture=new THREE.ImageUtils.loadTexture('js/lune.jpg');
+        	floorTexture.wrapS=floorTexture.wrapT=THREE.RepeatWrapping;
+		floorTexture.repeat.set(3,3);
+
+		var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+		var floorMaterial=new THREE.MeshBasicMaterial( {map:floorTexture,side:THREE.DoubleSide} );
+        	var floor=new THREE.Mesh(floorGeometry,floorMaterial);
+
+		floor.position.y=-2.6;
+		floor.rotation.x=Math.PI/2;
+		scene.add(floor);		
+
+		// Pyramide
+		var pyramidGeometry = new THREE.CylinderGeometry(0, 20, 25, 4, 1)
+		var pyramidMaterial = new THREE.MeshNormalMaterial();
+		var pyramid = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+
+		pyramid.position.x= -50;
+		pyramid.position.y = 10;
+		pyramid.position.z = -200;
+		scene.add(pyramid);		
+
+		// Collision
+		var collision=[];
+		collision.push(base1);
+
+
+		// Fonction de mouvement
+		function render() {
+			requestAnimationFrame(render);	
+			renderer.render(scene, camera);
+			controls.update();
+
+			soleil.rotation.y += 0.002;
+
+			terre.rotation.y += 0.002;
+
+			cylindre.rotation.x += 0.0;
+			cylindre.position.y += 0.0;
+			cylindre.rotation.y += -0.01;					
+			if (cylindre.position.y > 1) {
+				cylindre.rotation.y += -0.1;				
+			}			
+
+			// Rotation camera 
+			//if (cylindre.position.y > 1) {
+			//	camera.position.z += 1;				
+			//}			
+			//if (cylindre.position.y > 1) {
+			//	camera.position.x -= -0.1;
+			//}
+
+			// Vitesse camera 
+			var delta = clock.getDelta();
+			var moveDistance = 20 * delta;  
+			var rotateAngle = Math.PI / 2 * delta;
+
+			// Mouvement de la fusée 
+			if (keyboard.pressed("s")) {
+				cylindre.position.x += moveDistance;
+				cone.position.x += moveDistance;
+			}
+			if (keyboard.pressed("q")) {
+				cylindre.position.x -= moveDistance;
+				cone.position.x -= moveDistance;
+			}
+			if (keyboard.pressed("z")) {
+				cylindre.position.y += moveDistance;
+				cone.position.y += moveDistance;
+			}
+			if (keyboard.pressed("w")) {
+				cylindre.position.y -= moveDistance;
+				cone.position.y -= moveDistance;
+			}
+
+			// Mouvement camera 
+			//if (keyboard.pressed("right")) {
+			//	Camera.position.x += moveDistance;
+			//}
+			//if (keyboard.pressed("left")) {
+			//	Camera.position.x -= moveDistance;
+			//}
+			//if (keyboard.pressed("up")) {
+			//	Camera.position.y += moveDistance;
+			//}
+			//if (keyboard.pressed("down")) {
+			//	Camera.position.y -= moveDistance;
+			//}
+
+			// Collision
+			var originPoint = cylindre.position.clone();    
+			for (var i = 0; i < cylindre.geometry.vertices.length; i++){
+				var localVertex=cylindre.geometry.vertices[i].clone();
+				var globalVertex=localVertex.applyMatrix4(cylindre.matrix);
+				var directionVector=globalVertex.sub(cylindre.position);
+				var ray=new THREE.Raycaster(originPoint,directionVector.clone().normalize());
+				var collisionResults = ray.intersectObjects(collision);
+
+			if (collisionResults.length > 0 && collisionResults[0].distance < directionVector.length()) {
+				//console.log("Booom");
+				collisionResults[0].object.material.color.set(0xff0000);
+				}				
+            }
+		}
+		render();		
+	</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="js/three.js"></script>
+	<script src="js/OrbitControls.js"></script>
+	<script src="js/THREEx.KeyboardState.js"></script>
+	<script src="js/Detector.js"></script>
+	<style>
+		body {
+			margin: 0;
+		}
+		canvas {
+			width: 100%;
+			height: 100%
+		}
+	</style>
+</head>
+
+<body>
+	<script>
+		var scene = new THREE.Scene();
+		var camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight);
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		camera.position.z = 600;
+		camera.position.y = 600;
+
+		// Mouvement camera
+		var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+		// Mouvement clavier 
+		var keyboard = new THREEx.KeyboardState();
+		var clock = new THREE.Clock();
+		
+		// Sol
+		var floorTexture=new THREE.ImageUtils.loadTexture('js/sol.jpg');
+        floorTexture.wrapS=floorTexture.wrapT=THREE.RepeatWrapping;
+		floorTexture.repeat.set(15,15);
+
+		var floorGeometry = new THREE.PlaneGeometry(2500, 2500, 1, 1);
+		var floorMaterial=new THREE.MeshBasicMaterial( {map:floorTexture,side:THREE.DoubleSide} );
+		var floor=new THREE.Mesh(floorGeometry,floorMaterial);
+
+		floor.position.y=-2.6;
+		floor.rotation.x=Math.PI/2;
+		scene.add(floor);							
+		
+		// Petits batiments
+		var geometry1 = new THREE.BoxGeometry(20, 40, 20);	
+       		var material1=new THREE.MeshNormalMaterial();
+
+		var base1 = new THREE.Mesh(geometry1, material1);
+		scene.add(base1);
+		base1.position.x = -120;
+		base1.position.y = 18;
+		base1.position.z = -160;
+
+		var base2 = new THREE.Mesh(geometry1, material1);
+		scene.add(base2);
+		base2.position.x = -120;
+		base2.position.y = 18;
+		base2.position.z = -120;
+
+		var base3 = new THREE.Mesh(geometry1, material1);
+		scene.add(base3);
+		base3.position.x = -120;
+		base3.position.y = 18;
+		base3.position.z = 120;	
+
+		var base4 = new THREE.Mesh(geometry1, material1);
+		scene.add(base4);
+		base4.position.x = -120;
+		base4.position.y = 18;
+		base4.position.z = 160;	
+
+		var base5 = new THREE.Mesh(geometry1, material1);
+		scene.add(base5);
+		base5.position.x = 120;
+		base5.position.y = 18;
+		base5.position.z = -120;	
+		
+		var base6 = new THREE.Mesh(geometry1, material1);
+		scene.add(base6);
+		base6.position.x = 120;
+		base6.position.y = 18;
+		base6.position.z = -160;	
+
+		var base7 = new THREE.Mesh(geometry1, material1);
+		scene.add(base7);
+		base7.position.x = 120;
+		base7.position.y = 18;
+		base7.position.z = 120;
+
+		var base8 = new THREE.Mesh(geometry1, material1);
+		scene.add(base8);
+		base8.position.x = 120;
+		base8.position.y = 18;
+		base8.position.z = 160;			   		
+				
+		// Immeubles gauches
+		var immeubleGeometry = new THREE.BoxGeometry(40, 300, 80);	
+      		var immeubleMaterial=new THREE.MeshNormalMaterial();
+
+		var immeuble1 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble1);
+		immeuble1.position.x = -300;
+		immeuble1.position.y = 150;
+		immeuble1.position.z = 150;
+
+		var immeuble2 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble2);
+		immeuble2.position.x = -300;
+		immeuble2.position.y = 150;
+		immeuble2.position.z = -150;
+
+		var immeuble3 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble3);
+		immeuble3.position.x = -450;
+		immeuble3.position.y = 150;
+		immeuble3.position.z = 200;
+
+		var immeuble4 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble4);
+		immeuble4.position.x = -450;
+		immeuble4.position.y = 150;
+		immeuble4.position.z = -200;
+
+		var immeuble5 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble5);
+		immeuble5.position.x = -600;
+		immeuble5.position.y = 150;
+		immeuble5.position.z = 300;
+
+		var immeuble6 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble6);
+		immeuble6.position.x = -600;
+		immeuble6.position.y = 150;
+		immeuble6.position.z = -300;
+
+		var immeuble7 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble7);
+		immeuble7.position.x = -750;
+		immeuble7.position.y = 150;
+		immeuble7.position.z = 400;
+
+		var immeuble8 = new THREE.Mesh(immeubleGeometry, immeubleMaterial);
+		scene.add(immeuble8);
+		immeuble8.position.x = -750;
+		immeuble8.position.y = 150;
+		immeuble8.position.z = -400;
+
+		// Immeubles droits
+		var immeubleGeometry2 = new THREE.BoxGeometry(40, 300, 80);	
+        	var immeubleMaterial2=new THREE.MeshNormalMaterial();
+
+		var immeuble9 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble9);
+		immeuble9.position.x = 300;
+		immeuble9.position.y = 150;
+		immeuble9.position.z = 150;
+
+		var immeuble10 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble10);
+		immeuble10.position.x = 300;
+		immeuble10.position.y = 150;
+		immeuble10.position.z = -150;
+
+		var immeuble11 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble11);
+		immeuble11.position.x = 450;
+		immeuble11.position.y = 150;
+		immeuble11.position.z = 200;
+
+		var immeuble12 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble12);
+		immeuble12.position.x = 450;
+		immeuble12.position.y = 150;
+		immeuble12.position.z = -200;
+
+		var immeuble13 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble13);
+		immeuble13.position.x = 600;
+		immeuble13.position.y = 150;
+		immeuble13.position.z = 300;
+
+		var immeuble14 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble14);
+		immeuble14.position.x = 600;
+		immeuble14.position.y = 150;
+		immeuble14.position.z = -300;
+
+		var immeuble15 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble15);
+		immeuble15.position.x = 750;
+		immeuble15.position.y = 150;
+		immeuble15.position.z = 400;
+
+		var immeuble16 = new THREE.Mesh(immeubleGeometry2, immeubleMaterial2);
+		scene.add(immeuble16);
+		immeuble16.position.x = 750;
+		immeuble16.position.y = 150;
+		immeuble16.position.z = -400;
+
+		// Cylindres de faces
+		// Petit
+		var cylindreGeometry = new THREE.CylinderGeometry( 20, 20, 100, 32 );
+		var cylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var cylindre1 = new THREE.Mesh( cylindreGeometry, cylindreMaterial );
+		scene.add(cylindre1);
+		cylindre1.position.x = -150;
+		cylindre1.position.y = 50;
+		cylindre1.position.z = -300;
+
+		var cylindre2 = new THREE.Mesh( cylindreGeometry, cylindreMaterial );
+		scene.add(cylindre2);
+		cylindre2.position.x = 150;
+		cylindre2.position.y = 50;
+		cylindre2.position.z = -300;			
+
+		// Moyen
+		var moyenCylindreGeometry = new THREE.CylinderGeometry( 30, 30, 200, 32 );
+		var moyenCylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var moyenCylindre1 = new THREE.Mesh( moyenCylindreGeometry, moyenCylindreMaterial );
+		scene.add(moyenCylindre1);
+		moyenCylindre1.position.x = -150;
+		moyenCylindre1.position.y = 100;
+		moyenCylindre1.position.z = -450;
+
+		var moyenCylindre2 = new THREE.Mesh( moyenCylindreGeometry, moyenCylindreMaterial );
+		scene.add(moyenCylindre2);
+		moyenCylindre2.position.x = 150;
+		moyenCylindre2.position.y = 100;
+		moyenCylindre2.position.z = -450;
+
+		// Grand
+		var grandCylindreGeometry = new THREE.CylinderGeometry( 40, 40, 300, 32 );
+		var grandCylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var grandCylindre1 = new THREE.Mesh( grandCylindreGeometry, grandCylindreMaterial );
+		scene.add(grandCylindre1);
+		grandCylindre1.position.x = -150;
+		grandCylindre1.position.y = 150;
+		grandCylindre1.position.z = -650;
+
+		var grandCylindre2 = new THREE.Mesh( grandCylindreGeometry, grandCylindreMaterial );
+		scene.add(grandCylindre2);
+		grandCylindre2.position.x = 150;
+		grandCylindre2.position.y = 150;
+		grandCylindre2.position.z = -650;
+
+		// Très grand
+		var TGrandCylindreGeometry = new THREE.CylinderGeometry( 50, 50, 400, 32 );
+		var TGrandCylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var TGrandCylindre1 = new THREE.Mesh( TGrandCylindreGeometry, TGrandCylindreMaterial );
+		scene.add(TGrandCylindre1);
+		TGrandCylindre1.position.x = -150;
+		TGrandCylindre1.position.y = 200;
+		TGrandCylindre1.position.z = -900;
+
+		var TGrandCylindre2 = new THREE.Mesh( TGrandCylindreGeometry, TGrandCylindreMaterial );
+		scene.add(TGrandCylindre2);
+		TGrandCylindre2.position.x = 150;
+		TGrandCylindre2.position.y = 200;
+		TGrandCylindre2.position.z = -900;
+
+
+		// Cylindres arrières
+		// Petit
+		var cylindreGeometry = new THREE.CylinderGeometry( 20, 20, 100, 32 );
+		var cylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var cylindre3 = new THREE.Mesh( cylindreGeometry, cylindreMaterial );
+		scene.add(cylindre3);
+		cylindre3.position.x = -150;
+		cylindre3.position.y = 50;
+		cylindre3.position.z = 300;
+
+		var cylindre4 = new THREE.Mesh( cylindreGeometry, cylindreMaterial );
+		scene.add(cylindre4);
+		cylindre4.position.x = 150;
+		cylindre4.position.y = 50;
+		cylindre4.position.z = 300;			
+
+		// Moyen		
+		var moyenCylindreGeometry = new THREE.CylinderGeometry( 30, 30, 200, 32 );
+		var moyenCylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var moyenCylindre3 = new THREE.Mesh( moyenCylindreGeometry, moyenCylindreMaterial );
+		scene.add(moyenCylindre3);
+		moyenCylindre3.position.x = -150;
+		moyenCylindre3.position.y = 100;
+		moyenCylindre3.position.z = 450;
+
+		var moyenCylindre4 = new THREE.Mesh( moyenCylindreGeometry, moyenCylindreMaterial );
+		scene.add(moyenCylindre4);
+		moyenCylindre4.position.x = 150;
+		moyenCylindre4.position.y = 100;
+		moyenCylindre4.position.z = 450;
+
+		// Grand		
+		var grandCylindreGeometry = new THREE.CylinderGeometry( 40, 40, 300, 32 );
+		var grandCylindreMaterial = new THREE.MeshNormalMaterial();	
+
+		var grandCylindre3 = new THREE.Mesh( grandCylindreGeometry, grandCylindreMaterial );
+		scene.add(grandCylindre3);
+		grandCylindre3.position.x = -150;
+		grandCylindre3.position.y = 150;
+		grandCylindre3.position.z = 650;
+
+		var grandCylindre4 = new THREE.Mesh( grandCylindreGeometry, grandCylindreMaterial );
+		scene.add(grandCylindre4);
+		grandCylindre4.position.x = 150;
+		grandCylindre4.position.y = 150;
+		grandCylindre4.position.z = 650;
+
+		// Très grand		
+		var TGrandCylindreGeometry = new THREE.CylinderGeometry( 50, 50, 400, 32 );
+		var TGrandCylindreMaterial = new THREE.MeshNormalMaterial();
+
+		var TGrandCylindre1 = new THREE.Mesh( TGrandCylindreGeometry, TGrandCylindreMaterial );
+		scene.add(TGrandCylindre1);
+		TGrandCylindre1.position.x = -150;
+		TGrandCylindre1.position.y = 200;
+		TGrandCylindre1.position.z = 900;
+
+		var TGrandCylindre2 = new THREE.Mesh( TGrandCylindreGeometry, TGrandCylindreMaterial );
+		scene.add(TGrandCylindre2);
+		TGrandCylindre2.position.x = 150;
+		TGrandCylindre2.position.y = 200;
+		TGrandCylindre2.position.z = 900;
+
+
+		// Route 1
+		var route1Geometry = new THREE.BoxGeometry(70, 0, 2000);	
+        	var route1Material=new THREE.MeshNormalMaterial();
+
+		var route1 = new THREE.Mesh(route1Geometry, route1Material);
+		scene.add(route1);
+		route1.position.x = 0;
+		route1.position.y = 0;
+		route1.position.z = 0;
+
+
+		// Route 2
+		var route2Geometry = new THREE.BoxGeometry(1600, 0, 70);	
+        	var route2Material=new THREE.MeshNormalMaterial();
+
+		var route2 = new THREE.Mesh(route2Geometry, route2Material);
+		scene.add(route2);
+		route2.position.x = 0;
+		route2.position.y = 0;
+		route2.position.z = 0;
+
+
+		// Centre
+		var hexagoneGeometry = new THREE.CylinderGeometry( 80, 80, 0, 8);
+		var hexagoneMaterial = new THREE.MeshNormalMaterial();
+
+		var hexagone1 = new THREE.Mesh( hexagoneGeometry, hexagoneMaterial );
+		scene.add(hexagone1);
+		hexagone1.position.x = 0;
+		hexagone1.position.y = 0;
+		hexagone1.position.z = 0;
+
+
+		// Pyramides		
+		var pyramidGeometry = new THREE.CylinderGeometry(0, 150, 400, 4, 1)
+		var pyramidMaterial = new THREE.MeshNormalMaterial();
+
+		var pyramid1 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);		
+		scene.add(pyramid1);
+		pyramid1.position.x = -1050;
+		pyramid1.position.y = 200;
+		pyramid1.position.z = 0;
+
+		var pyramid2 = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+		scene.add(pyramid2);	
+		pyramid2.position.x = 1050;
+		pyramid2.position.y = 200;
+		pyramid2.position.z = 0;
+		
+		
+		// Spheres
+		var sphereGeometry = new THREE.SphereGeometry( 70, 32, 32 );
+		var sphereMaterial = new THREE.MeshNormalMaterial();
+
+		var sphere1 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		scene.add(sphere1);
+		sphere1.position.x = -600;
+		sphere1.position.y = 80;
+		sphere1.position.z = -800;
+
+		var sphere2 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		scene.add(sphere2);
+		sphere2.position.x = 600;
+		sphere2.position.y = 80;
+		sphere2.position.z = -800;
+
+		var sphere3 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		scene.add(sphere3);
+		sphere3.position.x = -600;
+		sphere3.position.y = 80;
+		sphere3.position.z = 800;
+
+		var sphere4 = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		scene.add(sphere4);
+		sphere4.position.x = 600;
+		sphere4.position.y = 80;
+		sphere4.position.z = 800;
+
+
+		// Supports
+		var supportGeometry = new THREE.CylinderGeometry( 25, 50, 15, 8 );
+		var supportMaterial = new THREE.MeshNormalMaterial();
+
+		var support1 = new THREE.Mesh(supportGeometry, supportMaterial);
+		scene.add(support1);
+		support1.position.x = -600;
+		support1.position.y = 10;
+		support1.position.z = -800;			   		 		
+
+		var support1 = new THREE.Mesh(supportGeometry, supportMaterial);
+		scene.add(support1);
+		support1.position.x = 600;
+		support1.position.y = 10;
+		support1.position.z = -800;		
+
+		var support1 = new THREE.Mesh(supportGeometry, supportMaterial);
+		scene.add(support1);
+		support1.position.x = -600;
+		support1.position.y = 10;
+		support1.position.z = 800;		
+
+		var support1 = new THREE.Mesh(supportGeometry, supportMaterial);
+		scene.add(support1);
+		support1.position.x = 600;
+		support1.position.y = 10;
+		support1.position.z = 800;		
+		
+
+		// Fonction de mouvement
+		function render() {
+			requestAnimationFrame(render);	
+			renderer.render(scene, camera);
+			controls.update();
+
+			// Vitesse camera 
+			var delta = clock.getDelta();
+			var moveDistance = 20 * delta;  
+			var rotateAngle = Math.PI / 2 * delta;			
+
+			// Mouvement clavier 
+			if (keyboard.pressed("right")) {
+				Camera.position.x += moveDistance;
+			}
+			if (keyboard.pressed("left")) {
+				Camera.position.x -= moveDistance;
+			}
+			if (keyboard.pressed("up")) {
+				Camera.position.y += moveDistance;
+			}
+			if (keyboard.pressed("down")) {
+				Camera.position.y -= moveDistance;
+			}			
+		}
+		render();		
+	</script>
+</body>
+</html>
